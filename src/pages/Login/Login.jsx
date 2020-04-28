@@ -11,6 +11,16 @@ export default class Login extends Component {
   onFinish = values => {
     console.log('Received values of form: ', values);
   }
+  //自定义验证
+  pswCheck =(_, value) =>{
+    // console.log(value)
+    const pswString = []
+    if(!value.trim()||!value) return Promise.reject('密码不能为空')
+    if( value.length<4 || value.length>12 ) pswString.push('密码长度为4~12位')
+    if(!(/^\w+$/).test(value)) pswString.push('密码必须是英文、数组或下划线组成')
+    if(pswString.length>0) return Promise.reject(pswString)
+    else return Promise.resolve()//必须要返回，不然控制台会报错
+  }
   render() {
     return (
       <div className="LoginContainer">
@@ -25,10 +35,23 @@ export default class Login extends Component {
             initialValues={{ remember: true }}
             onFinish={this.onFinish}
           >
-            <Item>
+            <Item 
+              name="username" 
+              rules={[
+                {required: true,message: '用户名不能为空'},
+                {min:4,message: '用户名至少4位'},
+                {max:12,message:'用户名必须小于等于12位'},
+                {pattern:/^\w+$/,message:'必须是英文、数字或下划线组成'}
+              ]}
+            >
               <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名" />
             </Item>
-            <Item>
+            <Item
+              name="password"
+              rules={[{
+                validator:this.pswCheck
+              }]}
+            >
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
