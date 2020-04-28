@@ -3,7 +3,6 @@ import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 // import ajax from '../../api/ajax'
 import {reqLogin} from '../../api'
-
 import logo from './images/logo.png'
 import './css/login.less'
 

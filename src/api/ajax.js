@@ -8,6 +8,7 @@
 
 import axios from 'axios'
 import qs from 'querystring'
+import {message as msg} from 'antd'
 
 // axios的默认配置
 axios.defaults.baseURL ='http://localhost:3000'
@@ -30,7 +31,17 @@ axios.interceptors.response.use(
     return response.data
   },
   error => {
-    console.log(error.message)
+    let errStr = '未知错误'
+    const {message} = error
+    if(message.indexOf('Network') !=-1){
+      errStr = '网络错误,请查看网络是否连接'
+    }else if( message.indexOf('timeout')!=-1 ){
+      errStr = '请求超时'
+    }else{
+      errStr = '未知错误,请联系客服'
+    }
+    msg.error(errStr)
+    // console.log(error.message)
     //这里返回的要是一个错误的promise或者初始状态的
     //发送请求返回不再处理正确的信息
     return new Promise(() => {})
