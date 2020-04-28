@@ -18,10 +18,9 @@ axios.interceptors.request.use(config=>{
   //config请求相关的配置对象 发送请求要根据config
   // console.log(config)
   const {data,method} = config
-  if(method.toLowerCase === 'post' && data instanceof Object){
-    qs.stringify(data)
+  if(method.toLowerCase() === 'post' && data instanceof Object){
+    config.data = qs.stringify(data)
   }
-  // console.log('data',data)
   return config
 })
 //响应拦截器
@@ -31,7 +30,7 @@ axios.interceptors.response.use(
     return response.data
   },
   error => {
-    alert(error.message)
+    console.log(error.message)
     //这里返回的要是一个错误的promise或者初始状态的
     //发送请求返回不再处理正确的信息
     return new Promise(() => {})
