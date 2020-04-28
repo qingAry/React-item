@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import ajax from '../../api/ajax'
 import logo from './images/logo.png'
 import './css/login.less'
 
@@ -9,12 +10,18 @@ const {Item} = Form
 export default class Login extends Component {
   // 登录成功的回调
   onFinish = values => {
-    console.log('Received values of form: ', values);
+    console.log('values',values);
+    // 3000找不到 去找4000
+    //`username=${values.username}&password=${values.password}`
+    ajax.post("/login",values).then(
+      response => {console.log('response','成功了')},
+      error =>{console.log('失败了',error)}
+    )
   }
   //自定义验证
-  pswCheck =(_, value) =>{
+  pswCheck =(_, value="") =>{
     // console.log(value)
-    const pswString = []
+    const pswString = []//为了能够同时判断多个条件
     if(!value.trim()||!value) return Promise.reject('密码不能为空')
     if( value.length<4 || value.length>12 ) pswString.push('密码长度为4~12位')
     if(!(/^\w+$/).test(value)) pswString.push('密码必须是英文、数组或下划线组成')
