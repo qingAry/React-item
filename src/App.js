@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import {Route,Switch,Redirect} from 'react-router-dom'
-import Login from './pages/Login/Login'
-import Admin from './pages/Admin/Admin'
+import Add from './components/Add/Add'
+
 
 export default class App extends Component {
   render() {
     return (
-        <Switch>
-          <Route path="/login" component={Login}/>
-          <Route path="/admin" component={Admin}/>
-          <Redirect to='/login'/>
-        </Switch>
+      <div>
+      <Add/>
+      </div>
     )
   }
 }
