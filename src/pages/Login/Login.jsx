@@ -21,6 +21,8 @@ export default class Login extends Component {
     try {
       let result = await reqLogin(values)
       console.log('result.data',result.data)
+      console.log(this.props.history)
+      this.props.history.push('/admin')
     } catch (error) {
       console.log('error',error.message)
     }

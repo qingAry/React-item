@@ -10,6 +10,7 @@ import axios from 'axios'
 import qs from 'querystring'
 import {message as msg} from 'antd'
 
+
 // axios的默认配置
 axios.defaults.baseURL ='http://localhost:3000'
 // 请求的超时时间
@@ -31,7 +32,7 @@ axios.interceptors.response.use(
     return response.data
   },
   error => {
-    let errStr = '未知错误'
+    let errStr = ''
     const {message} = error
     if(message.indexOf('Network') !=-1){
       errStr = '网络错误,请查看网络是否连接'
