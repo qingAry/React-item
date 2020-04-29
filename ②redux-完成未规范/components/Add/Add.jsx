@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import store from '../../redux/store'
-import {increment,decrement} from '../../redux/actions/count'
+import {increment,decrement} from '../../redux/count-action-creators'
 export default class Add extends Component {
   
   // state = {

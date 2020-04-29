@@ -8,7 +8,7 @@ export default class Add extends Component {
   // }
   increment=() => {
     const {value} = this.refs.num
-    // 调用store中的api dispatch并传入怎么做和条件的对象
+    // 调用store中的api dispatch并传入怎么做和基础条件的对象
     // 触发redux中数据的改变 返回新的数据状态
     store.dispatch({type:"increment",data:value*1})
   }
