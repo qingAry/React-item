@@ -6,6 +6,7 @@ export default class Add extends Component {
   // }
   increment=() => {
     const {value} = this.refs.num
+    //通过this.props接收容器组件的方法 并传递数据
     this.props.increment(value*1)
   }
   decrement=() => {
@@ -30,6 +31,7 @@ export default class Add extends Component {
     // console.log('this.props',this.props)
     return (
       <div>
+        {/* this.props.count 获取初始状态值和当前状态值*/}
         <p>获取的总和为：{this.props.count}</p>
         <input type="text" placeholder="请输入值" ref="num"/>
         <button onClick={this.increment}>+</button>

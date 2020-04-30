@@ -1,4 +1,5 @@
 import {createStore} from 'redux'//引入redux中的create方法（里面是分别暴露）
 import {changeState} from './count-reducers'//引入reducer方法
 
+//创建仓库
 export default createStore(changeState)

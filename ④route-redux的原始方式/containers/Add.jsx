@@ -16,6 +16,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 //connect返回的是一个函数，此返回的函数的返回值是一个组件
-//connect(actions中的内容)(ui组件)
-//暴露之后ui子组件会通过this.props对象
+//connect(state初始状态,actions中的内容)(ui组件)
+//暴露之后ui子组件会通过this.props获取状态和方法
+//同时入口文件通过provider，提供一个store,给容器组件使用
 export default connect(mapStateToProps,mapDispatchToProps)(Add)

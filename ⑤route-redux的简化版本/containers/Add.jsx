@@ -15,7 +15,7 @@ import {increment,decrement} from '../redux/actions/count'
 //   }
 // }
 
-//connect返回的是一个函数，此返回的函数的返回值是一个组件
+//connect返回的是一个函数，此返回的函数的返回值是一个容器组件
 //connect(actions中的内容)(ui组件)
 //暴露之后ui子组件会通过this.props对象
 // export default connect(mapStateToProps,mapDispatchToProps)(Add)
