@@ -1,9 +1,9 @@
+// 这是容器组件 是Add的ui组件的父组件 专注与redux打交道
+import {connect} from 'react-redux' //引入connect 与ui组件建立联系
+import {increment,decrement,incrementAsync} from '../redux/actions/count'
 import React, { Component } from 'react'
-export default class Add extends Component {
-  
-  // state = {
-  //   count:0
-  // }
+
+class Count extends Component {
   increment=() => {
     const {value} = this.refs.num
     this.props.increment(value*1)
@@ -43,3 +43,8 @@ export default class Add extends Component {
     )
   }
 }
+// 简写形式
+export default connect(
+    state => ({count:state.count,personTotal:state.persons.length}), //返回值为对象时候，要用小括号包裹
+    {increment,decrement,incrementAsync}
+  )(Count)
