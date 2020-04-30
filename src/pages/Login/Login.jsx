@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 // import ajax from '../../api/ajax'
-import {reqLogin} from '../../api'
+import {reqLogin} from '@/api'
 import logo from './images/logo.png'
 import './css/login.less'
 
@@ -18,12 +18,10 @@ export default class Login extends Component {
     //   response => {console.log('response','成功了',response)},
     //   error =>{console.log('失败了',error)}
     // )
-    try {
+      
       let result = await reqLogin(values)
       console.log('result.data',result.data)
-    } catch (error) {
-      console.log('error',error.message)
-    }
+    
   }
   //自定义验证
   pswCheck =(_, value="") =>{

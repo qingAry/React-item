@@ -8,10 +8,11 @@
 
 import axios from 'axios'
 import qs from 'querystring'
+// as取别名
 import {message as msg} from 'antd'
 
 // axios的默认配置
-axios.defaults.baseURL ='http://localhost:3000'
+axios.defaults.baseURL ='/api'
 // 请求的超时时间
 axios.defaults.timeout = 1500
 // 请求拦截器
@@ -33,12 +34,10 @@ axios.interceptors.response.use(
   error => {
     let errStr = '未知错误'
     const {message} = error
-    if(message.indexOf('Network') !=-1){
+    if(message.indexOf('Network') !== -1){
       errStr = '网络错误,请查看网络是否连接'
-    }else if( message.indexOf('timeout')!=-1 ){
+    }else if( message.indexOf('timeout')!== -1 ){
       errStr = '请求超时'
-    }else{
-      errStr = '未知错误,请联系客服'
     }
     msg.error(errStr)
     // console.log(error.message)
