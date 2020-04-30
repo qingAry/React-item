@@ -1,6 +1,6 @@
 // 这是容器组件 是Add的ui组件的父组件 专注与redux打交道
 import {connect} from 'react-redux' //引入connect 与ui组件建立联系
-import Add from '../components/Add/Add' //引入Add ui组件
+import Count from '../components/Count/Count' //引入Add ui组件
 import {increment,decrement,incrementAsync} from '../redux/actions/count'
 
 //返回的是一个数据对象
@@ -21,7 +21,7 @@ import {increment,decrement,incrementAsync} from '../redux/actions/count'
 // export default connect(mapStateToProps,mapDispatchToProps)(Add)
 // 简写形式
 export default connect(
-    state => ({count:state}), //返回值为对象时候，要用小括号包裹
+    state => ({count:state.count,personTotal:state.persons.length}), //返回值为对象时候，要用小括号包裹
     // {increment:increment,decrement:decrement}
     // {increment,decrement}
     // (dispatch) =>{
@@ -36,4 +36,4 @@ export default connect(
     //   })
     // }
     {increment,decrement,incrementAsync}
-  )(Add)
+  )(Count)

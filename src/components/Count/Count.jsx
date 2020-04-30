@@ -33,10 +33,11 @@ export default class Add extends Component {
     return (
       <div>
         <p>获取的总和为：{this.props.count}</p>
-        <input type="text" placeholder="请输入值" ref="num"/>
-        <button onClick={this.increment}>+</button>
-        <button onClick={this.decrement}>-</button>
-        <button onClick={this.incrementOdd}>increment if odd</button>
+        <p>总人数为：{this.props.personTotal}</p>
+        <input type="text" placeholder="请输入值" ref="num"/>&nbsp;
+        <button onClick={this.increment}>+</button>&nbsp;
+        <button onClick={this.decrement}>-</button>&nbsp;
+        <button onClick={this.incrementOdd}>increment if odd</button>&nbsp;
         <button onClick={this.incrementAsync}>increment async</button>
       </div>
     )
