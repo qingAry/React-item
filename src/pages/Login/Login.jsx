@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {reqLogin} from '../../api/index'
 import logo from './images/logo.png'
 import './css/login.less'
 
@@ -8,8 +9,12 @@ const {Item} = Form
 
 export default class Login extends Component {
 
-  onFinish = values => {
-    console.log('Received values of form: ', values);
+  onFinish = async (values) => {
+    // console.log('Received values of form: ', values);
+    // 发送请求
+    //携带的参数位urlencoded
+    let result = await reqLogin(values)
+    console.log('result.data',result.data)
   }
   /*
 用户名/密码的的合法性要求
