@@ -10,18 +10,11 @@ const {Item} = Form
 export default class Login extends Component {
 
   onFinish = async (values) => {
+    // console.log('Received values of form: ', values);
     // 发送请求
     //携带的参数位urlencoded
-    // try {
-    //   let result = await reqLogin(values)
-    //   // console.log('reqLogin(values)=',reqLogin(values))
-    //   console.log('result.data',result.data)
-    // } catch (error) {
-    //   console.log('error',error)
-    // }
     let result = await reqLogin(values)
-    //console.log('result.data',result.data)
-    console.log('result',result)
+    console.log('result.data',result.data)
   }
   /*
 用户名/密码的的合法性要求

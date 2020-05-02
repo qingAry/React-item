@@ -1,32 +1,38 @@
-import axios from 'axios'
-import qs from 'querystring'
-import {message as msg} from 'antd' //取别名
+import axios from 'axios'//引入axios的核心库
+import qs from 'querystring'//引入querystring
+import {message as msg} from 'antd'//引入antd库中的message,as是别名
+
+
 // 默认配置
-axios.defaults.baseURL = '/api'
-axios.defaults.timeout = '2000'
-// 响应拦截器
+axios.defaults.baseURL = '/api'//基础路径
+axios.defaults.timeout = 2000 //请求超时时间
+
+// 请求拦截器
 axios.interceptors.request.use((config) => {
+  let {data,method} = config
   console.log('config',config)
-  const {method,data} = config
-  if(method.toLowerCase()==='post' && data instanceof Object){
-    config.data =  qs.stringify(data)
+  if(method.toLowerCase() === 'post' && data instanceof Object){
+    // 对象转换位urlencoded
+    config.data = qs.stringify(data)
   }
   return config
 })
-//请求拦截器
-axios.interceptors.response.use((response) => {
-  // console.log('......................')
+//响应拦截器
+axios.interceptors.response.use(response => {
   return response.data
-},(error) => {
-  
+},error => {
+  // alert (error.message)
   const {message} = error
-  alert(message)
-  let errorMsg = '未知错误，请联系工作人员'
-  if(message.indexOf('Network') !== -1) errorMsg = '请查看网络连接是否正常'
-  else if(message.indexOf('timeout') !== -1) errorMsg = '网络请求超时'
-  else if(message.indexOf('401') !==-1) errorMsg='身份过期，请重新登录'
-  msg.error(errorMsg)
-  return new Promise(()=>{})
+  let errMsg = '未知错误，请联系管理员'
+  if(message.indexOf('Network') !== -1) errMsg = '请检查网络连接是否正常'
+  else if(message.indexOf('timeout') !==-1) errMsg = '网络连接超时'
+  else if(message.indexOf('401') !== -1) errMsg = '登录错误，请重新登录'
+  msg.error(errMsg)
+  //二次封装
+  //  中断promise链 处理错误 .then() 之后不再处理
+  return new Promise(() => {}) //后续错误不用在进行处理
+  // return Promise.reject(error) //.then之后继续处理错误
+  //throw error  //.then之后继续处理错误
 })
-//暴露axios
+
 export default axios
