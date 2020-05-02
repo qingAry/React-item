@@ -1,11 +1,11 @@
-import {ADD_PHONE} from '../action-types'
-export default function
-(pre = [
-    {id:'001',name:'iPhone11',price:5999},
-    {id:'002',name:'HUAWEI P40 Pro',price:6488}
-  ],
-  action){
+import {ADD_PHONE} from '../action-type'
+const initState = 
+    [
+      {id:'001',name:'OPPO Reno3',price:2999},
+      {id:'002',name:'小米10',price:3999}
+    ]
+export default function(pre = initState,action){
   const {type,data} = action
-  if(type === ADD_PHONE) return [data,...pre]
+  if(type ===ADD_PHONE ) return [data,...pre]
   return pre
 }

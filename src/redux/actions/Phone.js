@@ -1,3 +1,3 @@
-import {ADD_PHONE} from '../action-types'
+import {ADD_PHONE} from '../action-type'
 
-export const addPhone = (phoneObj) => ({type:ADD_PHONE,data:phoneObj})
+export const addPhone = (stateObj) => ({type:ADD_PHONE,data:stateObj})
