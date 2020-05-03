@@ -6,6 +6,7 @@ import Admin from './pages/Admin/Admin'
 export default class App extends Component {
   render() {
     return (
+        // 匹配到目标 就不再往下述查找
         <Switch>
           <Route path="/login" component={Login}/>
           <Route path="/admin" component={Admin}/>

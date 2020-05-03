@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {reqLogin} from '../../api/index'
-import logo from './images/logo.png'
-import './css/login.less'
+import logo from './images/logo.png'//引入图片
+import './css/login.less'//引入样式
 
 const {Item} = Form
 
@@ -11,14 +11,6 @@ export default class Login extends Component {
 
   onFinish = async (values) => {
     // 发送请求
-    //携带的参数位urlencoded
-    // try {
-    //   let result = await reqLogin(values)
-    //   // console.log('reqLogin(values)=',reqLogin(values))
-    //   console.log('result.data',result.data)
-    // } catch (error) {
-    //   console.log('error',error)
-    // }
     let result = await reqLogin(values)
     //console.log('result.data',result.data)
     console.log('result',result)
@@ -31,7 +23,8 @@ export default class Login extends Component {
   4). 必须是英文、数组或下划线组成
  */
   checkout = (_, value) =>{
-    console.log(value)
+    //自定义校验
+    // console.log(value)
     let errMsg = []
     if(!value || !value.trim()) return Promise.reject("输入密码不能为空")
     if(value.length<4 || value.length>12) errMsg.push("密码4~12位")
@@ -50,6 +43,7 @@ export default class Login extends Component {
         <div className="container">
           <p>用户登录</p>
           <Form onFinish={this.onFinish}>
+            {/* 声明式校验 */}
             <Item name="username" rules={[{
               required:true,
               message:'输入的内容不能为空'

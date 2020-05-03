@@ -1,5 +1,5 @@
 import axios from 'axios'//引入axios的核心库
-import qs from 'querystring'//引入querystring
+import qs from 'querystring'//引入querystring，请求数据转换位urlencoded
 import {message as msg} from 'antd'//引入antd库中的message,as是别名
 
 
@@ -15,10 +15,12 @@ axios.interceptors.request.use((config) => {
     // 对象转换位urlencoded
     config.data = qs.stringify(data)
   }
+  //必须返回config
   return config
 })
 //响应拦截器
 axios.interceptors.response.use(response => {
+  //请求成功的数据
   return response.data
 },error => {
   // alert (error.message)
