@@ -6,6 +6,7 @@ import {saveUserInfo} from '@/redux/actions/login'//引入action函数
 import {reqLogin} from '@/api/index'//引入请求登录函数
 import logo from './images/logo.png'//引入图片
 import './css/login.less'//引入样式
+import { Redirect } from 'react-router-dom';
 
 const {Item} = Form //从Form中解构Item组件
 
@@ -48,6 +49,7 @@ class Login extends Component {
 
   render() {
     console.log('this.props',this.props)
+    if(this.props.isLogin) return <Redirect to="/admin"/>
     return (
       <div id="wrap">
         <header>
@@ -94,5 +96,5 @@ class Login extends Component {
 
 //暴露容器组件
 export default connect(
-  (state) =>({}),
+  (state) =>({isLogin:state.userInfo.isLogin}),
 {saveUserInfo})(Login)
