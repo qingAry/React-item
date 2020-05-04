@@ -1,5 +1,5 @@
 //引入type常量
-import {SAVE_USER_INFO} from '@/redux/action-types'
+import {SAVE_USER_INFO,SIGNOUT} from '@/redux/action-types'
 //暴露action常量并暴露 --- login组件
 export const saveUserInfo = userObj => {
   const {token,user} = userObj
@@ -7,4 +7,10 @@ export const saveUserInfo = userObj => {
   localStorage.setItem('TOKEN',token)
   localStorage.setItem('USERINFO',JSON.stringify(user))
   return {type:SAVE_USER_INFO,data:userObj}
+}
+//退出登录 --- admin组件
+export const signOut = () => {
+  // 清除本地存储
+  localStorage.clear()
+  return {type:SIGNOUT}
 }
