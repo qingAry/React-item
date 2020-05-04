@@ -1,19 +1,32 @@
-import React, { Component } from 'react'
-import { Form, Input, Button } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {reqLogin} from '../../api/index'
+import React, { Component } from 'react'//引入react核心库
+import { Form, Input, Button, message } from 'antd';//引入antd组件
+import { UserOutlined, LockOutlined } from '@ant-design/icons';//引入antd中的组件
+import {connect} from 'react-redux' //引入connect 和ui组件建立联系
+import {saveUserInfo} from '@/redux/actions/login'//引入action函数
+import {reqLogin} from '@/api/index'//引入请求登录函数
 import logo from './images/logo.png'//引入图片
 import './css/login.less'//引入样式
 
-const {Item} = Form
+const {Item} = Form //从Form中解构Item组件
 
-export default class Login extends Component {
+class Login extends Component {
 
   onFinish = async (values) => {
     // 发送请求
     let result = await reqLogin(values)
     //console.log('result.data',result.data)
-    console.log('result',result)
+    const {status,data,msg} = result
+    if(status === 0){//登录成功
+      console.log('result',data)
+      message.success('登录成功',1)//停留时间：1s
+      //保存用户信息
+      this.props.saveUserInfo(data)
+      //登录成功，跳转到admin路由组件
+      this.props.history.push('/admin')
+    }else{
+      message.error(msg,1)
+    }
+    
   }
   /*
 用户名/密码的的合法性要求
@@ -34,6 +47,7 @@ export default class Login extends Component {
   }
 
   render() {
+    console.log('this.props',this.props)
     return (
       <div id="wrap">
         <header>
@@ -77,3 +91,8 @@ export default class Login extends Component {
     )
   }
 }
+
+//暴露容器组件
+export default connect(
+  (state) =>({}),
+{saveUserInfo})(Login)

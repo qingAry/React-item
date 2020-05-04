@@ -1,7 +1,8 @@
 import axios from 'axios'//引入axios的核心库
 import qs from 'querystring'//引入querystring，请求数据转换位urlencoded
 import {message as msg} from 'antd'//引入antd库中的message,as是别名
-
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 // 默认配置
 axios.defaults.baseURL = '/api'//基础路径
@@ -9,6 +10,8 @@ axios.defaults.timeout = 2000 //请求超时时间
 
 // 请求拦截器
 axios.interceptors.request.use((config) => {
+  //进度条开始
+  NProgress.start()
   let {data,method} = config
   console.log('config',config)
   if(method.toLowerCase() === 'post' && data instanceof Object){
@@ -20,9 +23,13 @@ axios.interceptors.request.use((config) => {
 })
 //响应拦截器
 axios.interceptors.response.use(response => {
+  //进度条结束
+  NProgress.done()
   //请求成功的数据
   return response.data
 },error => {
+  //进度条结束
+  NProgress.done()
   // alert (error.message)
   const {message} = error
   let errMsg = '未知错误，请联系管理员'
