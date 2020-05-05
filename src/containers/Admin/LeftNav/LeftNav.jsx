@@ -8,7 +8,7 @@ const { SubMenu,Item } = Menu;
 
 export default class LeftNav extends Component {
   
-  //展示侧边导航
+  //展示侧边导航中菜单的展示
   setShowNav = (menus) => {
     // console.log('object')
     return (
@@ -23,7 +23,7 @@ export default class LeftNav extends Component {
         }else{
           return (
             <SubMenu key={menu.key} icon={<menu.icon/>} title={menu.title}>
-              {/* 再次循环调用，判断有没有子菜单 */}
+              {/* 循环调用，直到没有子菜单*/}
               { this.setShowNav(menu.children) }
             </SubMenu>
           )

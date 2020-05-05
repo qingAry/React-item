@@ -54,8 +54,9 @@ class Header extends Component {
   getWeather = async() => {
     //请求
     let result = await reqWeather()
-    console.log(result)
+    // console.log(result)
     const {dayPictureUrl,weather,temperature} = result
+    // 设置状态
     this.setState({
       weatherObj:{dayPictureUrl,weather,temperature}
     })
@@ -86,11 +87,13 @@ class Header extends Component {
   componentWillUnmount(){
     clearInterval(this.timer)
   }
+
   render() {
-    const {username} = this.props
-    const {isFull,time} = this.state
+    const {username} = this.props //父容器获取用户名
+    const {isFull,time,weatherObj} = this.state
     // console.log(this.state.weatherObj)
-    const {dayPictureUrl,weather,temperature} = this.state.weatherObj
+    //获取天气信息
+    const {dayPictureUrl,weather,temperature} = weatherObj
     return (
       <div className="header">
         <div className="header-top">
