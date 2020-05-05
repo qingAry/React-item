@@ -8,6 +8,13 @@ import LeftNav from './LeftNav/LeftNav'
 import CheckLogin from '@/containers/HOC/CheckLogin'
 import './css/admin.less'
 import Home from '../Home/Home';
+import Category from '../Category/Category';
+import Bar from '../Bar/Bar'
+import User from '../User/User'
+import Role from '../Role/Role';
+import Line from '../Line/Line';
+import Pie from '../Pie/Pie';
+import Product from '../Product/Product';
 const { Footer, Sider, Content } = Layout;
 
 //装饰器函数
@@ -31,10 +38,18 @@ class Admin extends Component {
           <Layout>
             <Header/>
             <Content>
-              {/* <Switch>
+              {/* 注册路由 */}
+              <Switch>
                 <Route path="/admin/home" component={Home}/>
+                <Route path="/admin/prod_about/category" component={Category}/>
+                <Route path="/admin/prod_about/product" component={Product}/>
+                <Route path="/admin/user" component={User}/>
+                <Route path="/admin/role" component={Role}/>
+                <Route path="/admin/charts/bar" component={Bar}/>
+                <Route path="/admin/charts/line" component={Line}/>
+                <Route path="/admin/charts/pie" component={Pie}/>
                 <Redirect to="/admin/home"/>
-              </Switch> */}
+              </Switch>
             </Content>
             <Footer>Footer</Footer>
           </Layout>

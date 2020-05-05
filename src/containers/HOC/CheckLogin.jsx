@@ -20,7 +20,8 @@ export default function(ReceiveComponent) {
       const {isLogin} = this.props
       //获取地址栏中的地址
       const {pathname} = this.props.location
-      if( isLogin && pathname!== '/admin') return <Redirect to='/admin'/>
+      // 在什么条件下，才往admin跳转，只有在登录的条件下才往admin跳转
+      if( isLogin && pathname === '/login') return <Redirect to='/admin'/>
       if(!isLogin && pathname!== '/login' ) return <Redirect to='/login'/>
       //返回目标组件
       return <ReceiveComponent {...this.props}/>
