@@ -5,7 +5,7 @@ import {connect} from 'react-redux' //引入connect 和ui组件建立联系
 import {saveUserInfo} from '@/redux/actions/login'//引入action函数
 import {reqLogin} from '@/api/index'//引入请求登录函数
 import CheckLogin from '@/containers/HOC/CheckLogin'//引入判断是否登录高阶组件
-import logo from './images/logo.png'//引入图片
+import logo from '@/assets/images/logo.png'//引入图片
 import './css/login.less'//引入样式
 // import { Redirect } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ class Login extends Component {
     //console.log('result.data',result.data)
     const {status,data,msg} = result
     if(status === 0){//登录成功
-      console.log('result',data)
+      // console.log('result',data)
       message.success('登录成功',1)//停留时间：1s
       //保存用户信息
       this.props.saveUserInfo(data)
@@ -54,7 +54,7 @@ class Login extends Component {
   }
 
   render() {
-    console.log('this.props',this.props)
+    // console.log('this.props',this.props)
     // if(this.props.isLogin) return <Redirect to="/admin"/>
     return (
       <div id="wrap">

@@ -8,7 +8,7 @@ import App from './App'
 //由BrowserRouter包裹 路由页面才能显示
 ReactDOM.render(
   <Provider store={store}>
-  <BrowserRouter>
-  <App/>
-  </BrowserRouter>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
   </Provider>,document.getElementById('root'))

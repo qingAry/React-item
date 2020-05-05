@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import {signOut} from '@/redux/actions/login'
 //引入screenfull，是否全屏展示
 import screenfull from 'screenfull'
+//格式化时间
+import dayjs from 'dayjs'
 // 引入图标
 import {FullscreenOutlined,FullscreenExitOutlined,ExclamationCircleOutlined} from '@ant-design/icons'
 //引入样式
@@ -15,7 +17,9 @@ const { confirm } = Modal;
 class Header extends Component {
   // 数据状态
   state = {
-    isFull:false
+    isFull:false,
+    // 循环有变化，组件内部使用，就放在state状态中
+    time:dayjs().format('YYYY年 MM月DD日 HH:mm:ss')
   }
   // 登出
   signOut = () => {
@@ -55,17 +59,29 @@ class Header extends Component {
         isFull: !isFull
       })
     })
+    //更新日期时间
+    this.timer = setInterval(() => {
+      this.setState({
+        time:dayjs().format('YYYY年 MM月DD日 HH:mm:ss')
+      })
+    }, 1000);
+  }
+  // 组件即将卸载,清除定时器，防止退出登录报错
+  componentWillUnmount(){
+    clearInterval(this.timer)
   }
   render() {
+    const {username} = this.props
+    const {isFull,time} = this.state
     return (
       <div className="header">
         <div className="header-top">
           <Button size="small" onClick={this.setScreenFull}>
             {/* 放大缩小图标 展示的判断*/}
-            {this.state.isFull ? <FullscreenExitOutlined />:<FullscreenOutlined /> }
+            {isFull ? <FullscreenExitOutlined />:<FullscreenOutlined /> }
             {/* <FullscreenExitOutlined /> */}
           </Button>
-          <span className="userName">欢迎，{this.props.username}</span>
+          <span className="userName">欢迎，{username}</span>
           <Button type="link" onClick={this.signOut}>退出登录</Button>
         </div>
         <div className="header-bottom">
@@ -73,10 +89,10 @@ class Header extends Component {
             <h3>首页</h3>
           </div>
           <div className="bottom-right">
-            <span>2020年05月04日</span>
-            <img src="" alt=""/>
-            <span>天气</span>
-            <span></span>
+            <span>{time}</span>
+            <img src="" alt="图片"/>
+            <span>晴天</span>
+            <span>温度</span>
           </div>
         </div>
       </div>

@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 // import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { Layout } from 'antd';
+import { Switch,Route,Redirect } from 'react-router-dom'
 import Header from './Header/Header'
+import LeftNav from './LeftNav/LeftNav'
 import CheckLogin from '@/containers/HOC/CheckLogin'
 import './css/admin.less'
+import Home from '../Home/Home';
 const { Footer, Sider, Content } = Layout;
 
 //装饰器函数
@@ -22,10 +25,17 @@ class Admin extends Component {
     // if(!this.props.isLogin) return <Redirect to="/login"/>
     return (
         <Layout className="admin-containter">
-          <Sider className="left">Sider</Sider>
+          <Sider className="left">
+            <LeftNav/>
+          </Sider>
           <Layout>
             <Header/>
-            <Content>Content</Content>
+            <Content>
+              {/* <Switch>
+                <Route path="/admin/home" component={Home}/>
+                <Redirect to="/admin/home"/>
+              </Switch> */}
+            </Content>
             <Footer>Footer</Footer>
           </Layout>
         </Layout>
