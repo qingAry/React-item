@@ -46,7 +46,8 @@ class Header extends Component {
   componentDidMount(){
     //组件挂载完成之后，就开始监视
     // console.log('componentDidMount()')
-    //之后只要发生该改变就触发一次
+    //这是绑定的事件监听 只要触发就会发生改变
+    //一般函数只会执行一次 像发送请求
     screenfull.onchange(() => {
       // console.log('...............')
       let { isFull } = this.state
