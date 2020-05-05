@@ -7,6 +7,7 @@ import Header from './Header/Header'
 import LeftNav from './LeftNav/LeftNav'
 import CheckLogin from '@/containers/HOC/CheckLogin'
 import './css/admin.less'
+// 引入菜单的组件
 import Home from '../Home/Home';
 import Category from '../Category/Category';
 import Bar from '../Bar/Bar'

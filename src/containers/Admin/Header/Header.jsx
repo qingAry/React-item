@@ -10,6 +10,8 @@ import screenfull from 'screenfull'
 import dayjs from 'dayjs'
 // 引入图标
 import {FullscreenOutlined,FullscreenExitOutlined,ExclamationCircleOutlined} from '@ant-design/icons'
+// 引入天气请求函数
+import {reqWeather} from '@/api'
 //引入样式
 import './css/header.less'
 //modal弹出确认框
@@ -19,7 +21,9 @@ class Header extends Component {
   state = {
     isFull:false,
     // 循环有变化，组件内部使用，就放在state状态中
-    time:dayjs().format('YYYY年 MM月DD日 HH:mm:ss')
+    time:dayjs().format('YYYY年 MM月DD日 HH:mm:ss'),
+    //天气数据
+    weatherObj:{}
   }
   // 登出
   signOut = () => {
@@ -46,6 +50,16 @@ class Header extends Component {
       screenfull.toggle()
     }
   }
+  //天气请求
+  getWeather = async() => {
+    //请求
+    let result = await reqWeather()
+    console.log(result)
+    const {dayPictureUrl,weather,temperature} = result
+    this.setState({
+      weatherObj:{dayPictureUrl,weather,temperature}
+    })
+  }
   // 检测屏幕的改变
   componentDidMount(){
     //组件挂载完成之后，就开始监视
@@ -65,6 +79,8 @@ class Header extends Component {
         time:dayjs().format('YYYY年 MM月DD日 HH:mm:ss')
       })
     }, 1000);
+    //请求天气数据
+    // this.getWeather()
   }
   // 组件即将卸载,清除定时器，防止退出登录报错
   componentWillUnmount(){
@@ -73,6 +89,8 @@ class Header extends Component {
   render() {
     const {username} = this.props
     const {isFull,time} = this.state
+    // console.log(this.state.weatherObj)
+    const {dayPictureUrl,weather,temperature} = this.state.weatherObj
     return (
       <div className="header">
         <div className="header-top">
@@ -90,9 +108,9 @@ class Header extends Component {
           </div>
           <div className="bottom-right">
             <span>{time}</span>
-            <img src="" alt="图片"/>
-            <span>晴天</span>
-            <span>温度</span>
+            <img src={dayPictureUrl} alt="图片"/>
+            <span>{weather}</span>
+            <span>{temperature}</span>
           </div>
         </div>
       </div>
