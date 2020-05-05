@@ -44,7 +44,7 @@ class Header extends Component {
   }
   // 检测屏幕的改变
   componentDidMount(){
-    //项目挂载完成之后，就开始监视
+    //组件挂载完成之后，就开始监视
     // console.log('componentDidMount()')
     //之后只要发生该改变就触发一次
     screenfull.onchange(() => {
