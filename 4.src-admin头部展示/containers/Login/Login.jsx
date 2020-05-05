@@ -4,18 +4,12 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';//引入antd中�
 import {connect} from 'react-redux' //引入connect 和ui组件建立联系
 import {saveUserInfo} from '@/redux/actions/login'//引入action函数
 import {reqLogin} from '@/api/index'//引入请求登录函数
-import CheckLogin from '@/containers/HOC/CheckLogin'//引入判断是否登录高阶组件
 import logo from './images/logo.png'//引入图片
 import './css/login.less'//引入样式
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const {Item} = Form //从Form中解构Item组件
-//装饰器函数
-@connect(
-  (state) =>({isLogin:state.userInfo.isLogin}),
-  {saveUserInfo}
-  )
-@CheckLogin //先判断当前是否登录，在将页面交给connect处理 效率问题
+
 class Login extends Component {
 
   onFinish = async (values) => {
@@ -55,7 +49,7 @@ class Login extends Component {
 
   render() {
     console.log('this.props',this.props)
-    // if(this.props.isLogin) return <Redirect to="/admin"/>
+    if(this.props.isLogin) return <Redirect to="/admin"/>
     return (
       <div id="wrap">
         <header>
@@ -99,12 +93,8 @@ class Login extends Component {
     )
   }
 }
-/* 
-login = connect(state...)(login)
-*/
-//暴露返回的容器组件
-export default Login
+
 //暴露容器组件
-// export default connect(
-//   (state) =>({isLogin:state.userInfo.isLogin}),
-// {saveUserInfo})(Login)
+export default connect(
+  (state) =>({isLogin:state.userInfo.isLogin}),
+{saveUserInfo})(Login)

@@ -72,10 +72,7 @@ class Header extends Component {
             <h3>首页</h3>
           </div>
           <div className="bottom-right">
-            <span>2020年05月04日</span>
-            <img src="" alt=""/>
-            <span>天气</span>
-            <span></span>
+            <p>2020年05月04日</p>
           </div>
         </div>
       </div>
