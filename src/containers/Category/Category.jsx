@@ -1,25 +1,23 @@
 import React, { Component } from 'react'
 import { Card, Button,Table,Modal,Form, Input } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { reqCategoryList } from '@/api'
+import { connect } from 'react-redux'
+import { category_list_async } from '@/redux/actions/category'
 
 const { Item } = Form
 
-export default class Category extends Component {
+@connect(
+  state => ({categoryList:state.categoryList}),//映射状态
+  {category_list_async} //隐射操作状态的方法
+)
+// 定义组件
+class Category extends Component {
   
   state = { 
     visible: false,
-    categoryList: []
    }
-  
-  getCategoryList = async() => {
-    const result = await reqCategoryList()
-    this.setState({
-      categoryList:result.data
-    })
-  }
   componentDidMount(){
-    this.getCategoryList()
+    this.props.category_list_async()
   }
   // 是否显示模态框
   showModal = () => {
@@ -47,7 +45,7 @@ export default class Category extends Component {
 
   render() {
     // 数据来源
-    const dataSource = this.state.categoryList;
+    const dataSource = this.props.categoryList;
     //列设置
     const columns = [
       {
@@ -105,3 +103,5 @@ export default class Category extends Component {
     )
   }
 }
+
+export default Category
