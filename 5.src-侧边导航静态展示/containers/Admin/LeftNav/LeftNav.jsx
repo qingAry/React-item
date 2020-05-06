@@ -17,9 +17,9 @@ export default class LeftNav extends Component {
         // 判断menu有没有子菜单
         if( !menu.children ){
           return (
-            <Item key={menu.key}>
-              <Link to={menu.path}>
-                <menu.icon/>{menu.title}
+            <Item key={menu.key} icon={<menu.icon/>}>
+              <Link to={menu.path}  style={{color:'#fff'}}>
+                {menu.title}
               </Link>
             </Item>
           )
