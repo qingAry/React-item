@@ -27,7 +27,7 @@ const { Footer, Sider, Content } = Layout;
   )
 @CheckLogin
 class Admin extends Component {
-
+  
   render() {
     //render里面不能编程式跳转 使用Redirect自动跳转到指定的路由组件
     // if(!this.props.isLogin) return <Redirect to="/login"/>
@@ -38,7 +38,7 @@ class Admin extends Component {
           </Sider>
           <Layout>
             <Header/>
-            <Content>
+            <Content className="admin-content">
               {/* 注册路由 */}
               <Switch>
                 <Route path="/admin/home" component={Home}/>
@@ -52,7 +52,9 @@ class Admin extends Component {
                 <Redirect to="/admin/home"/>
               </Switch>
             </Content>
-            <Footer>Footer</Footer>
+            <Footer className="footer">
+              推荐使用谷歌浏览器，使用效果更佳
+            </Footer>
           </Layout>
         </Layout>
     )

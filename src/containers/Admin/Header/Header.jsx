@@ -89,7 +89,7 @@ class Header extends Component {
   }
 
   render() {
-    const {username} = this.props //父容器获取用户名
+    const {username,menuTitle} = this.props //父容器获取用户名
     const {isFull,time,weatherObj} = this.state
     // console.log(this.state.weatherObj)
     //获取天气信息dayPictureUrl
@@ -107,7 +107,7 @@ class Header extends Component {
         </div>
         <div className="header-bottom">
           <div className="bottom-left">
-            <h3>首页</h3>
+            <h3>{menuTitle}</h3>
           </div>
           <div className="bottom-right">
             <span>{time}</span>
@@ -126,7 +126,8 @@ class Header extends Component {
 }
 export default connect(
   state => ({
-   username:state.userInfo.user.username
+   username:state.userInfo.user.username,
+   menuTitle:state.menuTitle
   }),
   {signOut}
 )(Header)

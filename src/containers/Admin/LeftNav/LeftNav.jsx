@@ -1,14 +1,52 @@
 import React, { Component } from 'react'
 import { Menu } from 'antd';
 import { Link,withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { saveMenuTitle } from '@/redux/actions/menu_title'
 import menus from '@/config/left-nav'
 import logo from '@/assets/images/logo.png'
 import './css/leftNav.less'//引入样式
 
 const { SubMenu,Item } = Menu;
+@connect(
+  () => ({}),//映射状态
+  {saveMenuTitle} //隐射状态的方法
+)
 // 引入withRouter将组件加工，让this.props身上能有路由组件的属性
 @withRouter
 class LeftNav extends Component {
+  
+  //保存状态的方法
+  saveMenuTitle = (menuTitile) => {
+    // 直接传入title 刷新之后页面显示为空
+   this.props.saveMenuTitle(menuTitile)
+  }
+
+  //查找刷新之后路径下的title，显示在header中
+  findMenuTitle = () => {
+    const {pathname} = this.props.location
+    const menuKeyArr = pathname.split('/')
+    let key = menuKeyArr.slice(-1)[0] //截取路径获取key
+    if(key === 'admin') key = 'home' //退出重新登录，首页标题要刷新才能够有显示
+    let menuTitle = ''
+    menus.forEach((menu) => {
+      // 判断有没有children
+      if( !menu.children){
+        if(menu.key === key){
+          menuTitle = menu.title
+          // console.log(menuTitle)
+         }
+      }else{
+        menu['children'].forEach(children => {
+           if(children.key === key) menuTitle = children.title
+         } )
+      }
+    })
+    this.props.saveMenuTitle(menuTitle)
+  }
+  componentDidMount = () => {
+    this.findMenuTitle()
+  }
   //展示侧边导航中菜单的展示
   setShowNav = (menus) => {
     // console.log('object')
@@ -17,7 +55,10 @@ class LeftNav extends Component {
         // 判断menu有没有子菜单
         if( !menu.children ){
           return (
-            <Item key={menu.key}>
+            <Item key={menu.key} onClick={() => {
+              this.saveMenuTitle(menu.title)
+              }}
+            >
               <Link to={menu.path}>
                 <menu.icon/>{menu.title}
               </Link>
@@ -46,6 +87,7 @@ class LeftNav extends Component {
     </SubMenu>
     */
   }
+  
   render() {
     // console.log(this.props.location.pathname)
     const {pathname} = this.props.location
@@ -64,7 +106,7 @@ class LeftNav extends Component {
             <Menu
               // defaultSelectedKeys={menuKeyArr}//默认选中,只能选中一次
               selectedKeys={menuKeyArr} //匹配最终浏览器的路径 /admin/home
-              defaultOpenKeys={menuKeyArr}//是否默认展开,里面的key是数组
+              defaultOpenKeys={menuKeyArr}//是否默认展开,选中就展开,里面的key是数组
               mode="inline"//展示形式
               theme="dark"//主体颜色
             >
