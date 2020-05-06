@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom'
+import { Link,withRouter } from 'react-router-dom'
 import menus from '@/config/left-nav'
 import logo from '@/assets/images/logo.png'
 import './css/leftNav.less'//引入样式
 
 const { SubMenu,Item } = Menu;
-
-export default class LeftNav extends Component {
-  
+// 引入withRouter将组件加工，让this.props身上能有路由组件的属性
+@withRouter
+class LeftNav extends Component {
   //展示侧边导航中菜单的展示
   setShowNav = (menus) => {
     // console.log('object')
@@ -47,6 +47,10 @@ export default class LeftNav extends Component {
     */
   }
   render() {
+    // console.log(this.props.location.pathname)
+    const {pathname} = this.props.location
+    //刷新之后保存默认选中的menu
+    const menuKeyArr = pathname.split('/') //获取当前路径下的key数组
     return (
       <div className='left-nav'>
         <div className='nav-top'>
@@ -56,9 +60,11 @@ export default class LeftNav extends Component {
           </h1>
         </div>
         <div className='nav-bottom'>
+          {/* 直接给给一个没有处理数组 antd自动排查item中存在相关key的menu */}
             <Menu
-              defaultSelectedKeys={['home']}//默认选中,只能选中一次
-              //defaultOpenKeys={['sub1']}//是否默认展开
+              // defaultSelectedKeys={menuKeyArr}//默认选中,只能选中一次
+              selectedKeys={menuKeyArr} //匹配最终浏览器的路径 /admin/home
+              defaultOpenKeys={menuKeyArr}//是否默认展开,里面的key是数组
               mode="inline"//展示形式
               theme="dark"//主体颜色
             >
@@ -70,3 +76,5 @@ export default class LeftNav extends Component {
     )
   }
 }
+
+export default LeftNav
