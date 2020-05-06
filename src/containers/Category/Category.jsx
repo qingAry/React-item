@@ -1,12 +1,26 @@
 import React, { Component } from 'react'
 import { Card, Button,Table,Modal,Form, Input } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import { reqCategoryList } from '@/api'
 
 const { Item } = Form
 
 export default class Category extends Component {
   
-  state = { visible: false }
+  state = { 
+    visible: false,
+    categoryList: []
+   }
+  
+  getCategoryList = async() => {
+    const result = await reqCategoryList()
+    this.setState({
+      categoryList:result.data
+    })
+  }
+  componentDidMount(){
+    this.getCategoryList()
+  }
   // 是否显示模态框
   showModal = () => {
     this.setState({
@@ -33,31 +47,19 @@ export default class Category extends Component {
 
   render() {
     // 数据来源
-    const dataSource = [
-      {
-        key: '1', //唯一标识
-        name: '胡彦斌', 
-        age: 32,
-      },
-      {
-        key: '2',
-        name: '胡彦祖',
-        age: 42,
-      },
-    ];
+    const dataSource = this.state.categoryList;
     //列设置
     const columns = [
       {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name',
+        title: '分类名',
+        dataIndex: 'name'
       },
       {
-        title: '年龄',
-        dataIndex: 'age',
-        key: 'age',
+        title: '操作',
+        dataIndex: 'change',
         align:'center',
-        width:'25%'
+        width:'25%',
+        render:() => <Button type="link">修改分类</Button> //高级渲染，页面重复相同的内容
       }
     ];
     return (
@@ -67,7 +69,16 @@ export default class Category extends Component {
                   <PlusCircleOutlined/>添加
                 </Button>}
           >
-            <Table bordered dataSource={dataSource} columns={columns} />
+            <Table bordered 
+              dataSource={dataSource} 
+              columns={columns}
+              rowKey="_id"
+              pagination={
+                {
+                  pageSize:5//每页显示商品数量
+                }
+              }
+            />
           </Card>
           {/* 模态框 */}
           <Modal

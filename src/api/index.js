@@ -21,5 +21,6 @@ export const reqWeather = () => {
     )
   })
 }
-
+//请求商品分类
+export const reqCategoryList = () => ajax.get('/manage/category/list')
 

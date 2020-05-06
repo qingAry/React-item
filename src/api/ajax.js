@@ -2,6 +2,7 @@ import axios from 'axios'//引入axios的核心库
 import qs from 'querystring'//引入querystring，请求数据转换位urlencoded
 import {message as msg} from 'antd'//引入antd库中的message,as是别名
 import NProgress from 'nprogress'
+import store from '@/redux/store'
 import 'nprogress/nprogress.css'
 
 // 默认配置
@@ -13,10 +14,15 @@ axios.interceptors.request.use((config) => {
   //进度条开始
   NProgress.start()
   let {data,method} = config
-  console.log('config',config)
+  // console.log('config',config)
   if(method.toLowerCase() === 'post' && data instanceof Object){
     // 对象转换位urlencoded
     config.data = qs.stringify(data)
+  }
+  // 获取token
+  const { token } = store.getState().userInfo
+  if(token){
+    config.headers.Authorization = 'atguigu_' + token
   }
   //必须返回config
   return config
