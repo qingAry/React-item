@@ -1,25 +1,51 @@
 import React, { Component } from 'react'
-import { Card, Button,Table } from 'antd';
+import { Card, Button,Table,Modal,Form, Input } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
+const { Item } = Form
 
 export default class Category extends Component {
+  
+  state = { visible: false }
+  // 是否显示模态框
+  showModal = () => {
+    this.setState({
+      visible: true,
+    })
+  }
+  //确定
+  handleOk = () => {
+    this.setState({
+      visible: false,
+    })
+  }
+  //取消
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  // 表单提交
+  onFinish = values => {
+    console.log('Success:', values);
+  }
+
   render() {
+    // 数据来源
     const dataSource = [
       {
-        key: '1',
-        name: '胡彦斌',
+        key: '1', //唯一标识
+        name: '胡彦斌', 
         age: 32,
-        address: '西湖区湖底公园1号',
       },
       {
         key: '2',
         name: '胡彦祖',
         age: 42,
-        address: '西湖区湖底公园1号',
       },
     ];
-    
+    //列设置
     const columns = [
       {
         title: '姓名',
@@ -30,19 +56,41 @@ export default class Category extends Component {
         title: '年龄',
         dataIndex: 'age',
         key: 'age',
-      },
-      {
-        title: '住址',
-        dataIndex: 'address',
-        key: 'address',
-      },
-    ];    
+        align:'center',
+        width:'25%'
+      }
+    ];
     return (
-        <Card 
-          extra={<Button type='primary'><PlusCircleOutlined />添加</Button>}
-        >
-          <Table dataSource={dataSource} columns={columns} />
-        </Card>
+        <div>
+          <Card 
+          extra={<Button type='primary' onClick={this.showModal}>
+                  <PlusCircleOutlined/>添加
+                </Button>}
+          >
+            <Table bordered dataSource={dataSource} columns={columns} />
+          </Card>
+          {/* 模态框 */}
+          <Modal
+            title="新增分类"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            okText="确定"
+            cancelText="取消"
+          >
+            <Form
+              name="category"
+              onFinish={this.onFinish}
+            >
+              <Item
+                name="categoryName"
+                rules={[{ required: true, message: '添加分类不能为空' }]}
+              >
+                <Input />
+              </Item>
+            </Form>
+          </Modal>
+        </div>
     )
   }
 }
