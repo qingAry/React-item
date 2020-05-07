@@ -41,7 +41,11 @@ axios.interceptors.response.use(response => {
   let errMsg = '未知错误，请联系管理员'
   if(message.indexOf('Network') !== -1) errMsg = '请检查网络连接是否正常'
   else if(message.indexOf('timeout') !==-1) errMsg = '网络连接超时'
-  else if(message.indexOf('401') !== -1) errMsg = '登录错误，请重新登录'
+  else if(message.indexOf('401') !== -1) {
+    store.dispatch(signOut())// token过期之后，自动退出重新登录
+    store.dispatch(saveMenuTitle(''))//保存的title可以清除/可以不清楚
+    errMsg = '登录身份过期，请重新登录'
+  }
   msg.error(errMsg)
   //二次封装
   //  中断promise链 处理错误 .then() 之后不再处理
