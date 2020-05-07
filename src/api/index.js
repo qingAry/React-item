@@ -23,4 +23,5 @@ export const reqWeather = () => {
 }
 //请求商品分类
 export const reqCategoryList = () => ajax.get('/manage/category/list')
-
+//请求添加商品分类
+export const reqAddCategory = (categoryName) => ajax.post('/manage/category/add',categoryName)

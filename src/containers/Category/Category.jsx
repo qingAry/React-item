@@ -1,20 +1,22 @@
 import React, { Component } from 'react'
-import { Card, Button,Table,Modal,Form, Input } from 'antd';
+import { Card, Button,Table,Modal,Form, Input,message } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux'
-import { category_list_async } from '@/redux/actions/category'
-
+import { v4 as uuidv4 } from 'uuid'
+import { category_list_async,add_category } from '@/redux/actions/category'
+import { reqAddCategory } from '@/api'
 const { Item } = Form
 
 @connect(
   state => ({categoryList:state.categoryList}),//映射状态
-  {category_list_async} //隐射操作状态的方法
+  {category_list_async,add_category} //隐射操作状态的方法
 )
 // 定义组件
 class Category extends Component {
   
   state = { 
     visible: false,
+    categoryName:''
    }
   componentDidMount(){
     this.props.category_list_async()
@@ -39,8 +41,29 @@ class Category extends Component {
   }
 
   // 表单提交
-  onFinish = values => {
-    console.log('Success:', values);
+  onFinish = async (values) => {
+    // 添加商品分类请求
+    const result = await reqAddCategory(values)
+    // 请求成功
+    if(result.status === 0){
+      // const {name} = result.data
+      // console.log('reqAddCategory',result.data.name)
+      this.props.add_category({name:result.data.name,_id:uuidv4()})
+    }else{
+      // 请求失败
+      message.error(result.msg,1)
+    }
+    this.setState({
+      visible: false,
+    });
+  }
+  //输入框发生改变
+  changeName = (event) => {
+    const {value} = event.target
+    // console.log('changeName',value)
+    this.setState({
+      categoryName:value
+    })
   }
 
   render() {
@@ -90,12 +113,17 @@ class Category extends Component {
             <Form
               name="category"
               onFinish={this.onFinish}
+              rules = {
+                [
+                  { required:true,message:'输入内容不能为空'}
+                ]
+              }
             >
               <Item
                 name="categoryName"
                 rules={[{ required: true, message: '添加分类不能为空' }]}
               >
-                <Input />
+                <Input onChange={this.changeName}/>
               </Item>
             </Form>
           </Modal>
