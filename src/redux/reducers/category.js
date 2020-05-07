@@ -6,7 +6,7 @@ export default function (pre = initState,action){
     case SAVE_CATEGORY_LIST:
     return [...data]
     case ADD_CATEGORY:
-    return [...pre,data]
+    return [data,...pre]
     default:
     return pre
   }
