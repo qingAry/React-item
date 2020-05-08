@@ -1,5 +1,5 @@
 // 商品分类列表的action
-import { SAVE_CATEGORY_LIST,ADD_CATEGORY } from '@/redux/action-types'
+import { SAVE_CATEGORY_LIST } from '@/redux/action-types'
 import { reqCategoryList } from '@/api'
 // 保存
 export const category_list = (categoryDate) => ({type:SAVE_CATEGORY_LIST,data:categoryDate})
@@ -10,5 +10,3 @@ export const category_list_async = () => {
     dispatch(category_list(result.data))
   }
 }
-// 添加
-export const add_category = (categoryObj) => ({type:ADD_CATEGORY,data:categoryObj})
