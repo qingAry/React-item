@@ -15,7 +15,7 @@ export default class Product extends Component {
   // 商品列表请求
   getProduct= async(currentPage = 1) => {
     const result = await reqProduct(currentPage,PAGESIZE)
-    // console.log(result,result.total)
+    console.log(result,result.total)
     const {status,data,msg} = result
     const {total} = data
     if(status === 0){
@@ -56,10 +56,10 @@ export default class Product extends Component {
         align:'center',
         render:(status) => (
             <div>
-              <Button type={status ? 'danger':'primary'}>
-              {status ? '下架':'上架'}
+              <Button type={status === 1 ? 'danger':'primary'}>
+              {status === 1 ? '下架':'上架'}
             </Button><br/>
-            <span>{status ? '在售':'已停售'}</span>
+            <span>{status === 1 ? '在售':'已停售'}</span>
             </div>
           )
       },
