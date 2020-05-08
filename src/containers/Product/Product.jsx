@@ -1,31 +1,37 @@
 import React, { Component } from 'react'
-import { Card, Button,Select,Table } from 'antd'
+import { Card, Button,Select,Table, message } from 'antd'
 import { PlusCircleOutlined,SearchOutlined } from '@ant-design/icons';
+import { reqProduct } from '@/api'
+import { PAGESIZE } from '@/config/type'
 
 const { Option } = Select;
 
 export default class Product extends Component {
+  
+  state = {
+    productList:[], //商品列表
+    total:0,//总的数据
+  }
+  // 商品列表请求
+  getProduct= async() => {
+    const result = await reqProduct(1,PAGESIZE)
+    // console.log(result,result.total)
+    const {status,data,msg} = result
+    const {total} = data
+    if(status === 0){
+      this.setState({productList:data.list,total})
+    }else{
+      message.error(msg,1)
+    }
+  }
+  //dom挂载完成
+  componentDidMount(){
+    this.getProduct() //请求商品列表
+  }
   render() {
     // 表格内容
     // 数据源
-    const dataSource = [
-      {
-        key: '1',
-        name: '胡彦斌',
-        desc: 32,
-        price:1800,
-        status:true,
-        actions: '',
-      },
-      {
-        key: '2',
-        name: '胡彦斌',
-        desc: 32,
-        price:1800,
-        status:false,
-        actions: '',
-      }
-    ];
+    const dataSource = this.state.productList;
     // 数据列表配置项
     const columns = [
       {
@@ -82,7 +88,13 @@ export default class Product extends Component {
         添加商品</Button>}
       >
         {/* 表格 */}
-        <Table bordered dataSource={dataSource} columns={columns} />
+        <Table
+         rowKey="_id"
+         bordered 
+         dataSource={dataSource} 
+         columns={columns}
+         pagination={{pageSize:PAGESIZE,total:this.state.total}}
+        />
       </Card>
     )
   }
