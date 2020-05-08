@@ -13,8 +13,8 @@ export default class Product extends Component {
     total:0,//总的数据
   }
   // 商品列表请求
-  getProduct= async() => {
-    const result = await reqProduct(1,PAGESIZE)
+  getProduct= async(currentPage = 1) => {
+    const result = await reqProduct(currentPage,PAGESIZE)
     // console.log(result,result.total)
     const {status,data,msg} = result
     const {total} = data
@@ -74,7 +74,8 @@ export default class Product extends Component {
     return (
       // 卡片
       <Card 
-        title={<div>
+        title={
+          <div>
           {/* 搜索 */}
           <Select defaultValue="name">
             <Option value="name">按名称搜索</Option>
@@ -82,7 +83,8 @@ export default class Product extends Component {
           </Select>
           <input placeholder="请输入关键词" style={{margin:'10px'}}/>
           <Button type="primary"><SearchOutlined/>搜索</Button>
-          </div>} 
+          </div>
+        } 
         extra={<Button type='primary'> 
         <PlusCircleOutlined/>
         添加商品</Button>}
@@ -93,7 +95,14 @@ export default class Product extends Component {
          bordered 
          dataSource={dataSource} 
          columns={columns}
-         pagination={{pageSize:PAGESIZE,total:this.state.total}}
+         pagination={{
+           pageSize:PAGESIZE,
+           total:this.state.total,
+           //当页数发生改变
+           onChange:(page) => {
+            this.getProduct(page) //请求商品列表
+           }
+          }}
         />
       </Card>
     )
