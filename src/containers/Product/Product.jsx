@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Card, Button,Select,Table, message } from 'antd'
+import { Card, Button,Select,Table, message,Input } from 'antd'
 import { PlusCircleOutlined,SearchOutlined } from '@ant-design/icons';
-import { reqProduct } from '@/api'
+import { reqProduct,reqSearch } from '@/api'
 import { PAGESIZE } from '@/config/type'
 
 const { Option } = Select;
@@ -11,15 +11,34 @@ export default class Product extends Component {
   state = {
     productList:[], //商品列表
     total:0,//总的数据
+    pageNum:0,
+    searchName:'name',
+    searchType:'productName'
+    
   }
+  // 搜索请求
+  // search = async() => {
+  //   const {pageNum} = this.state
+  //   const result = await reqSearch(this.searchType,this.searchName,pageNum,PAGESIZE)
+  //   console.log(result)
+  // }
   // 商品列表请求
   getProduct= async(currentPage = 1) => {
-    const result = await reqProduct(currentPage,PAGESIZE)
-    console.log(result,result.total)
+    let result
+    // 判断当前是否是搜索状态
+    if(this.isSearch){
+      const {searchType,searchName} = this.state
+      // console.log(searchType,searchName)
+      result = await reqSearch(searchType,searchName,currentPage,PAGESIZE)
+      console.log(result)
+    }else{
+      result = await reqProduct(currentPage,PAGESIZE)
+    }
     const {status,data,msg} = result
-    const {total} = data
+    // 判断发送请求是否成功
     if(status === 0){
-      this.setState({productList:data.list,total})
+      const {total,pageNum,list} = data
+      this.setState({productList:list,total,pageNum})
     }else{
       message.error(msg,1)
     }
@@ -77,12 +96,30 @@ export default class Product extends Component {
         title={
           <div>
           {/* 搜索 */}
-          <Select defaultValue="name">
-            <Option value="name">按名称搜索</Option>
-            <Option value="desc">按描述搜索</Option>
+          <Select defaultValue="productName" onChange={(value) => this.setState({
+            searchType:value
+          })}>
+            <Option value="productName">按名称搜索</Option>
+            <Option value="productDesc">按描述搜索</Option>
           </Select>
-          <input placeholder="请输入关键词" style={{margin:'10px'}}/>
-          <Button type="primary"><SearchOutlined/>搜索</Button>
+          <Input
+            allowClear
+            placeholder="请输入关键词"
+            style={{margin:'10px',width:'25%'}}
+            onChange = {(event) => {
+              const {value} = event.target
+              // console.log(value)
+              this.setState({
+                searchName:value
+              })
+            }}
+          />
+          <Button onClick={() => {
+            this.isSearch = true
+            this.getProduct() //请求商品列表
+          }} type="primary">
+            <SearchOutlined/>搜索
+          </Button>
           </div>
         } 
         extra={<Button type='primary'> 
@@ -98,6 +135,7 @@ export default class Product extends Component {
          pagination={{
            pageSize:PAGESIZE,
            total:this.state.total,
+           current: this.state.pageNum,
            //当页数发生改变
            onChange:(page) => {
             this.getProduct(page) //请求商品列表

@@ -27,3 +27,9 @@ export const reqCategoryList = () => ajax.get('/manage/category/list')
 export const reqAddCategory = (categoryName) => ajax.post('/manage/category/add',categoryName)
 //请求商品列表
 export const reqProduct = (pageNum,pageSize) => ajax.get('/manage/product/list',{params:{pageNum,pageSize}})
+//搜索商品列表
+export const reqSearch = (searchType,searchName,pageNum,pageSize) => (
+  ajax.get('/manage/product/search',
+    {params:{[searchType]:searchName,pageNum,pageSize}}
+  )
+)
