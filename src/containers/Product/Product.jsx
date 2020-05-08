@@ -84,7 +84,7 @@ export default class Product extends Component {
       },
       {
         title: '操作',
-        dataIndex: 'action',
+        dataIndex: 'action',//显示内容
         align:'center',
         key: 'status',
         render:() => <div><Button type='link'>修改</Button><br/><Button type='link'>详情</Button></div>

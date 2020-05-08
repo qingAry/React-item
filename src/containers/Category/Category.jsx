@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Card, Button,Table,Modal,Form, Input } from 'antd';
+import { Card, Button,Table,Modal,Form, Input,message } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux'
 import { category_list_async } from '@/redux/actions/category'
+import {reqAddCategory,reqUpdataCategory} from '@/api'
 const { Item } = Form
 
 @connect(
@@ -14,24 +15,44 @@ class Category extends Component {
   
   state = { 
     visible: false,
-    categoryName:''
+    categoryName:'',
+    name:'',
+    isUpdate:false
    }
   componentDidMount(){
     this.props.category_list_async()
   }
   // 是否显示模态框
-  showModal = () => {
+  showModal = (categoryObj) => {
+    console.log(categoryObj)
+    if(this.state.isUpdate){
+      this.setState({
+        visible:true,
+        name:categoryObj.name
+      })
+    }
     this.setState({
       visible: true,
     })
   }
   //确定
-  handleOk = () => {
-    console.log('ref',this.refs.formInstance)
-    console.log(this.refs.formInstance.getFieldValue())
-    this.setState({
-      visible: false,
-    })
+  handleOk = async() => {
+    // console.log('ref',this.refs.formInstance)
+    // console.log(this.refs.formInstance.getFieldsValue())
+    const { categoryName } = this.refs.formInstance.getFieldValue()
+    //添加分类请求
+    const result = await reqAddCategory({categoryName})
+    // console.log(result)
+    const {status,msg} = result
+    if(status === 0){
+      this.props.category_list_async()
+      this.setState({
+        visible: false,
+      })
+    }else{
+      message.error(msg,1)
+    }
+    
   }
   //取消
   handleCancel = () => {
@@ -60,16 +81,27 @@ class Category extends Component {
       },
       {
         title: '操作',
-        dataIndex: 'change',
+        // dataIndex: 'change',
         align:'center',
         width:'25%',
-        render:() => <Button type="link">修改分类</Button> //高级渲染，页面重复相同的内容
+        render:(categoryObj) => 
+          <Button
+            type="link"
+            onClick={() =>{
+              this.setState({isUpdate:true})
+              this.showModal(categoryObj)
+            }}
+          >修改分类
+          </Button> //高级渲染，页面重复相同的内容
       }
     ];
     return (
         <div>
           <Card 
-          extra={<Button type='primary' onClick={this.showModal}>
+          extra={<Button type='primary' onClick={() => {
+                  this.setState({isUpdate:false})
+                  this.showModal()
+                }}>
                   <PlusCircleOutlined/>添加
                 </Button>}
           >
@@ -86,7 +118,7 @@ class Category extends Component {
           </Card>
           {/* 模态框 */}
           <Modal
-            title="新增分类"
+            title={this.state.isUpdate?'修改分类':'新增分类'}
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
@@ -101,7 +133,7 @@ class Category extends Component {
                 name="categoryName"
                 rules={[{ required: true, message: '添加分类不能为空' }]}
               >
-                <Input/>
+                <Input placeholder="请输入分类名"/>
               </Item>
             </Form>
           </Modal>
