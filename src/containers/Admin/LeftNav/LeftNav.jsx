@@ -28,6 +28,8 @@ class LeftNav extends Component {
     const menuKeyArr = pathname.split('/')
     let key = menuKeyArr.slice(-1)[0] //截取路径获取key
     if(key === 'admin') key = 'home' //退出重新登录，首页标题要刷新才能够有显示
+    //跳转product的子路由，title不丢失/点击子路由仍然能选中列表
+    if(pathname.indexOf('product') !== -1) key = 'product'
     let menuTitle = ''
     menus.forEach((menu) => {
       // 判断有没有children

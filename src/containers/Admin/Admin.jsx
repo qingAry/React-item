@@ -16,6 +16,8 @@ import Role from '../Role/Role';
 import Line from '../Line/Line';
 import Pie from '../Pie/Pie';
 import Product from '../Product/Product';
+import Detail from '../Product/Detail/Detail'
+import UpdateAdd from '../Product/UpdateAdd/UpdateAdd'
 const { Footer, Sider, Content } = Layout;
 
 //装饰器函数
@@ -43,12 +45,15 @@ class Admin extends Component {
               <Switch>
                 <Route path="/admin/home" component={Home}/>
                 <Route path="/admin/prod_about/category" component={Category}/>
-                <Route path="/admin/prod_about/product" component={Product}/>
+                <Route path="/admin/prod_about/product" exact component={Product}/>
                 <Route path="/admin/user" component={User}/>
                 <Route path="/admin/role" component={Role}/>
                 <Route path="/admin/charts/bar" component={Bar}/>
                 <Route path="/admin/charts/line" component={Line}/>
                 <Route path="/admin/charts/pie" component={Pie}/>
+                <Route path="/admin/prod_about/product/detail/:id" component={Detail}/>
+                <Route path="/admin/prod_about/product/add" component={UpdateAdd}/>
+                <Route path="/admin/prod_about/product/updata/:id" component={UpdateAdd}/>
                 <Redirect to="/admin/home"/>
               </Switch>
             </Content>

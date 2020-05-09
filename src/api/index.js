@@ -35,3 +35,7 @@ export const reqSearch = (searchType,searchName,pageNum,pageSize) => (
     {params:{[searchType]:searchName,pageNum,pageSize}}
   )
 )
+// 商品的上架与下架
+export const reqUpdateProductStatus = (productId,status) => ajax.post('/manage/product/updateStatus',{productId,status})
+//获取商品详情信息
+export const reqProductInfo = (productId) => ajax.get('/manage/product/info',{params:{productId}})

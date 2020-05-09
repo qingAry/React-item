@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Button,Select,Table, message,Input } from 'antd'
 import { PlusCircleOutlined,SearchOutlined } from '@ant-design/icons';
-import { reqProduct,reqSearch } from '@/api'
+import { reqProduct,reqSearch,reqUpdateProductStatus } from '@/api'
 import { PAGESIZE } from '@/config/type'
 
 const { Option } = Select;
@@ -13,8 +13,25 @@ export default class Product extends Component {
     total:0,//总的数据
     pageNum:0,
     searchName:'name',
-    searchType:'productName'
-    
+    searchType:'productName',
+    isloading:true
+  }
+  // 商品的下架与上架
+  changeProductStatus = async(id,currentStatus) => {
+    // id:1代表上架 2代表下架
+    console.log(id,currentStatus)
+    currentStatus = currentStatus === 1 ? 2 : 1
+    let result = await reqUpdateProductStatus(id,currentStatus)
+    const {status,msg} = result
+    if(status === 0){
+      // 如果更新更新，提示框显示，并且更新列表状态
+      message.success('更新状态成功')
+      // 参数：当然更新商品所在的位置
+      this.getProduct(this.state.pageNum)
+    }else{
+      // 下架失败
+      message.error(msg)
+    }
   }
   // 搜索请求
   // search = async() => {
@@ -38,7 +55,7 @@ export default class Product extends Component {
     // 判断发送请求是否成功
     if(status === 0){
       const {total,pageNum,list} = data
-      this.setState({productList:list,total,pageNum})
+      this.setState({productList:list,total,pageNum,isloading:false})
     }else{
       message.error(msg,1)
     }
@@ -67,15 +84,17 @@ export default class Product extends Component {
         title: '价格',
         dataIndex: 'price',
         key: 'price',
+        // 结果是什么页面上就显示什么
+        render:(price)=>'￥'+price 
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        // dataIndex: 'status',
         key: 'status',
         align:'center',
-        render:(status) => (
+        render:({_id,status}) => (
             <div>
-              <Button type={status === 1 ? 'danger':'primary'}>
+              <Button onClick={() => {this.changeProductStatus(_id,status)}} type={status === 1 ? 'danger':'primary'}>
               {status === 1 ? '下架':'上架'}
             </Button><br/>
             <span>{status === 1 ? '在售':'已停售'}</span>
@@ -84,10 +103,23 @@ export default class Product extends Component {
       },
       {
         title: '操作',
-        dataIndex: 'action',//显示内容
+        dataIndex: '_id',//显示内容
         align:'center',
         key: 'status',
-        render:() => <div><Button type='link'>修改</Button><br/><Button type='link'>详情</Button></div>
+        render:(id) => (
+          <div>
+            <Button
+              type='link' 
+              onClick={() => {this.props.history.push(`/admin/prod_about/product/updata/${id}`)}}
+            >修改
+            </Button><br/>
+            <Button
+              type='link'
+              onClick={() => {this.props.history.push(`/admin/prod_about/product/detail/${id}`)}}
+            >详情
+            </Button>
+          </div>
+        )
       },
     ];
     return (
@@ -122,13 +154,19 @@ export default class Product extends Component {
           </Button>
           </div>
         } 
-        extra={<Button type='primary'> 
-        <PlusCircleOutlined/>
-        添加商品</Button>}
+        extra={
+          <Button 
+            type='primary'
+            onClick={() => {this.props.history.push(`/admin/prod_about/product/add`)}}
+          > 
+            <PlusCircleOutlined/>
+            添加商品
+          </Button>}
       >
         {/* 表格 */}
         <Table
          rowKey="_id"
+         loading = {this.state.isloading}
          bordered 
          dataSource={dataSource} 
          columns={columns}
