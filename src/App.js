@@ -15,3 +15,6 @@ export default class App extends Component {
     )
   }
 }
+
+
+console.dir({})

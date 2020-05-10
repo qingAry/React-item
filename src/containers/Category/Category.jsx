@@ -59,7 +59,7 @@ class Category extends Component {
     // console.log('formInstance.getFieldsValue()',formInstance.getFieldsValue())
     let result = ''
     //输入分类名不为空的时候
-    console.log('cname.trim()',cname.trim()+'...................')
+    // console.log('cname.trim()',cname.trim()+'...................')
     if(!cname || !cname.trim()){
       message.error('输入的内容不能为空',1)
     }else{
@@ -80,8 +80,8 @@ class Category extends Component {
         this.setState({
           visible: false
         })
-        // 重置表单？？？？？？
-        formInstance.resetFields()
+        // 重置表单
+        // formInstance.resetFields()
       }else{
         message.error(msg,1)
       }

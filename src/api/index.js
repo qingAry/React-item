@@ -39,3 +39,5 @@ export const reqSearch = (searchType,searchName,pageNum,pageSize) => (
 export const reqUpdateProductStatus = (productId,status) => ajax.post('/manage/product/updateStatus',{productId,status})
 //获取商品详情信息
 export const reqProductInfo = (productId) => ajax.get('/manage/product/info',{params:{productId}})
+//获取请求删除图片
+export const reqDeleteProduct = (name) => ajax.post('/manage/img/delete',{name})

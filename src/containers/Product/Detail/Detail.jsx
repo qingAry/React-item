@@ -3,7 +3,7 @@ import { Card, Button,List, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux'
 import { category_list_async } from '@/redux/actions/category'
-import { reqProductInfo } from '@/api'//请求商品详情信息
+import { reqProductInfo } from '@/api'//请求商品详情
 import { IMGE_BASE_URL } from '@/config/type'
 import './css/detail.less'
 const { Item } = List
@@ -74,7 +74,7 @@ const { Item } = List
               </Item>
               <Item className='product-wraper'>
                 <span className='product-description'>商品图片:</span>
-                {imgs.map(imgName => <img  key={imgName} src={`${IMGE_BASE_URL}/${imgName}`} alt="商品图片"/>)}
+                {imgs.map(imgName => <img  key={imgName} src={IMGE_BASE_URL+'/'+ imgName} alt="商品图片"/>)}
               </Item>
               <Item className='product-wraper'>
                 <span className='product-description'>商品详情:</span>
